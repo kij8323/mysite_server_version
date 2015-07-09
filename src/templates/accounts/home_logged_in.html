@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load time_chinese %}
+
+{% block title %}Welcome | {% endblock %}
+
+<style>
+{% block style %}
+{% endblock %}
+</style>
+
+
+
+
+{% block content %}
+<!--
+{% if not recent_videos%}
+<div class='row'>
+<div class='col-sm-6 col-sm-offset-3'>
+
+		<div class='col-sm-12'>
+			<h1>Try these Videos</h1>
+			{% for vid in random_videos %}
+			<a href="{{ vid.get_absolute_url }}">{{ vid.title }}</a><br/>
+			{% if forloop.counter == 1 %}
+			<a href="{{ vid.get_absolute_url }}"><img src="{{ vid.category.get_image_url }}" class='img-responsive'/></a><br/>
+			{% endif %}
+			{% endfor %}
+			<hr/>
+		</div>
+</div>
+</div>
+{% endif %}
+-->
+
+
+<div class='row'>
+<div class='col-sm-4'>
+	<div class='row'>
+
+	<!--显示用户最近浏览过的6个视频 -->
+	<div class='col-sm-12'>
+		<h1>最近浏览</h1>
+	{% if recent_videos %}
+		
+			{% for vid in recent_videos %}
+			<a href="{{ vid.get_absolute_url }}">{{ vid.title }}</a><br/>
+				{% if forloop.counter == 1 %}
+				<a href="{{ vid.get_absolute_url }}"><img src="{{ vid.category.get_image_url }}" class='img-responsive'/></a><br/>
+				{% endif %}
+			{% endfor %}
+			
+
+
+	{% else %}
+	<p class='lead'>
+	Recently viewed videos will be here.
+	</p>
+
+
+	{% endif %}
+<hr/>
+</div>
+
+	<!--点击次数最多的4个视频-->
+	{% if popular_videos %}
+		<div class='col-sm-12'>
+			<h1>最火视频</h1>
+			{% for vid in popular_videos %}
+			<a href="{{ vid.get_absolute_url }}">{{ vid.title }}</a><br/>
+			{% if forloop.counter == 1 %}
+			<a href="{{ vid.get_absolute_url }}"><img src="{{ vid.category.get_image_url }}" class='img-responsive'/></a><br/>
+			{% endif %}
+			{% endfor %}
+			<hr/>
+		</div>
+	
+	{% endif %}
+	
+
+	</div>
+</div>
+
+<!--最近的6个评论-->
+<div class='col-sm-8'>
+	<h1>最近评论</h1>
+	
+	{% if recent_comments %}
+		
+			
+			<table class='table'>
+			{% for comment in recent_comments %}
+				<tr><td><font color="#337ab7"> {{ comment.user }}</font>: {{ comment.get_preview }}
+				<small> <font color="#337ab7"> 
+				{{ comment.timestamp|timesince|time_chinese_weeks|time_chinese_week|time_chinese_minus|time_chinese_minu|time_chinese_days|time_chinese_day|time_chinese_hours|time_chinese_hour }}前
+				</font></small> </td><td>
+				<a href='{{ comment.get_absolute_url }}'>浏览</a></td></tr>
+			{% endfor %}
+
+			</table>
+	{% else %}
+
+	<p class='lead'>
+	All comments will be here.
+	</p>
+	{% endif %}
+
+		</div>
+</div>
+
+{% endblock %}

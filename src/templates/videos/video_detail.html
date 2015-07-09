@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load time_chinese %}
+{% block title %}{% endblock %}
+
+<style>
+{% block style %}
+.reply_comment {
+	display: none;
+}
+
+.fa{
+height: 1em;
+line-height: 2.2em;
+}
+{% endblock %}
+</style>
+
+
+<script>
+{% block jquery %}
+function update_iframe_size(){
+	var parent_id = $("iframe").parent().attr("id");
+	if (parent_id == "main_video") {
+		var parent_class = $("iframe").parent().attr("class");
+		var parent_width = $("iframe").parent().width();
+		console.log(parent_class);
+		var width = $("iframe").css("width"); // $("iframe").width();
+		var height = $("iframe").css("height");
+		var ratio = parseInt(height)/parseInt(width);
+		var new_height = parseInt(parent_width) * ratio
+		$("iframe").css("width", parent_width);
+		$("iframe").css("height", new_height);
+	}
+}
+update_iframe_size()
+$(window).bind("resize", function(){
+	// alert("reized");
+	update_iframe_size();
+});
+$('.reply_btn').click(function(e){
+	e.preventDefault();
+	$(this).next(".reply_comment").fadeToggle();
+	// $(".reply_comment").fadeToggle();
+})
+{% endblock %}
+</script>
+
+
+
+
+
+
+
+
+
+{% block content %}
+<div class='row'>
+<div class='col-sm-8'>
+<h1>{{ obj.title }}</h1>
+</div>
+
+<div class='col-sm-4' style='text-align:right;'>
+
+{% if obj.get_previous_url %}
+<a href='{{ obj.get_previous_url }}'><i class="fa fa-3x fa-arrow-circle-o-left"></i></a>
+{% endif %}
+{% if obj.get_next_url %}	
+<a href='{{ obj.get_next_url }}'><i class="fa fa-3x fa-arrow-circle-o-right"></i></a>
+{% endif %}
+</div>
+
+<!--
+<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ obj.get_share_link }}"><i class="fa fa-facebook-square fa-3x"></i></a>
+
+
+<a target="_blank" href="https://twitter.com/home?status={{ obj.get_share_message|safe }}"><i class="fa fa-twitter-square fa-3x"></i></a>
+
+<a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ obj.get_share_link }}&title={{ obj.get_share_message|safe }}&summary={{ obj.get_share_message|safe }}&source={{ obj.get_share_link }}">
+<i class="fa fa-linkedin-square fa-3x"></i>
+</a>
+</div>
+-->
+
+<div class='col-sm-12'>
+<hr/>
+</div>
+
+</div>
+<div class='col-sm-12' id='main_video'>
+{{ obj.embed_code|safe }}
+
+</div>
+
+{% if obj.tags.all %}
+<div class='col-sm-12'>
+<ul>
+{% for tag in obj.tags.all %}
+<li>{{ tag }}</li>
+{% endfor %}
+<ul>
+</div>
+{% endif %}
+
+<br/>
+
+
+
+<br/>
+<hr/>
+
+
+<!-- 视频下方的Add Comment表格 -->
+<div class='row'>
+<div class='col-sm-12'>
+<h1>评论/提问</h1>
+<form method="POST" action='{{ obj.get_absolute_url }}'>{% csrf_token %}
+<input type='hidden' name='video_id' value='{{ obj.id }}'/>
+<input type='hidden' name='origin_path' value='{{ request.get_full_path }}'/>
+
+{% crispy comment_form comment_form.helper %}
+</form>
+
+
+<br/>
+<br/>
+<!-- 显示当前评论 -->
+<table class='table'>
+
+{% for comment in comments %}
+<!-- 显示当前父评论的评论内容 -->
+
+<tr><td>
+<small><font color="#337ab7">{{ comment.user }}</font>:</small>
+{{ comment.get_comment }} 
+<!-- 发表评论内容的用户名和发表时间 -->
+<font color="#337ab7"><small> {{ comment.timestamp|timesince|time_chinese_weeks|time_chinese_week|time_chinese_minus|time_chinese_minu|time_chinese_days|time_chinese_day|time_chinese_hours|time_chinese_hour }} 前 </small></font>
+				<!-- 如果评论不是一个子评论 -->
+				{% if not comment.is_child %}
+				<ul>
+				<!-- 显示该评论所有的子评论 -->
+				{% for child in comment.get_children %}
+
+				<!--如果评论是回应某个子评论的，那么显示被评论的子评论的用户名-->
+				{% if  child.get_reponse  %}
+				<font color="#337ab7"><li><small> {{ child.user }} </font>回复  <font color="#337ab7">{{ child.get_reponse }}</font>: </small>
+				<!--反之直接显示子评论即可-->
+				{% else %}
+				<li><small> <font color="#337ab7">{{ child.user }}</font>: </small>
+				{% endif %}
+
+				{{ child.get_comment }} 
+
+				<!--回复子评论的reply与表-->
+				
+				<a href='#' class='reply_btn'>回复</a>
+				<div class='reply_comment'>
+				<form method="POST" action='{{ obj.get_absolute_url }}'>{% csrf_token %}
+				<input type='hidden' name='video_id' value='{{ obj.id }}'/>
+				<input type='hidden' name='origin_path' value='{{ comment.get_origin }}'/>
+				<input type='hidden' name='parent_id' value='{{ comment.id }}' />
+				<input type='hidden' name='reponse_id' value='{{ child.id }}' />
+
+				{% crispy comment_form comment_form.helper %}
+				
+				</form>
+				</div>
+
+				</li>
+				{% endfor %}
+				</ul>
+
+
+				<!-- 回复父评论的按钮以及表格-->
+				<a href='{{ comment.get_absolute_url }}'>只看此回复</a> | <a href='#' class='reply_btn'>回复</a>
+				<div class='reply_comment'>
+				<form method="POST" action='{{ obj.get_absolute_url }}'>{% csrf_token %}
+				<input type='hidden' name='video_id' value='{{ obj.id }}'/>
+				<input type='hidden' name='origin_path' value='{{ comment.get_origin }}'/>
+				<input type='hidden' name='parent_id' value='{{ comment.id }}' />
+				{% crispy comment_form comment_form.helper %}
+				
+				</form>
+				</div>
+				{% endif %}
+
+
+</td></tr>
+
+{% endfor %}
+
+</table>
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
