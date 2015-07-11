@@ -98,7 +98,7 @@ class Notification(models.Model):
 			target_url = None
 		#内容
 		context = {
-			#"sender": self.sender_object,
+			"sender": self.sender_object,
 			"verb": self.verb,
 			"action": self.action_object,
 			"target": u'请浏览',
