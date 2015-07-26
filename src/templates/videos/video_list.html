@@ -72,7 +72,7 @@
 
 {% for item in queryset %}
 
-<tr><td>{% if request.user.is_authenticated or item.has_preview %}<a href='{{ item.get_absolute_url }}'>[第{{ forloop.counter }}集] {{ item }}</a> {% else %} {{ item }} {% endif %}</td></tr>
+<tr><td>{% if request.user.is_authenticated or item.has_preview %}<a href='{{ item.get_absolute_url }}'>[第{{ forloop.counter }}课] {{ item }}</a> {% else %} {{ item }} {% endif %}</td></tr>
 
 
 {% endfor %}

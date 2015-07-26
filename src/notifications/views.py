@@ -53,6 +53,7 @@ def read(request, id):
 
 
 @login_required
+# 收件箱ajax模块
 def hello(request):
 	#返回所有已回复并且未读的消息
 	if request.is_ajax():

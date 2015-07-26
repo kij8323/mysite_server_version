@@ -15,7 +15,6 @@ from notifications.signals import notify
 
 #http://127.0.0.1:8000/comment/1
 #显示该评论的所有子评论
-@login_required
 def comment_thread(request, id):
 	comment = get_object_or_404(Comment, id=id)
 	form = CommentForm()
@@ -26,7 +25,7 @@ def comment_thread(request, id):
 	return render(request, "comments/comment_thread.html", context)
 
 
-
+@login_required
 def comment_create_view(request):
 	#如果能接受到POST消息，并且是注册用户
 	if request.method == "POST" and request.user.is_authenticated():

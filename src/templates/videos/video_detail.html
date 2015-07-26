@@ -67,35 +67,55 @@
 	border-radius: 4px;
 }
 
+.comment-module{
+	background-color: #fff; 
+	margin-top: 15px; 
+	margin-bottom: 100px; 
+	border-radius: 4px;
+}
+
+.form-control{
+	/*width: 50%;*/
+}
+
+.textarea.form-control {
+	height: 60px;
+}
 
 {% endblock %}
 </style>
 
 
+<script>
+{% block jquery %}
+$('.reply_btn').click(function(e){
+	e.preventDefault();
+	$(this).next(".reply_comment").fadeToggle();
+	// $(".reply_comment").fadeToggle();
+})
+{% endblock %}
+</script>
 
 
 
 
 
 {% block content %}
-<div class='row'>
-<div class='col-sm-9' id='main_video'>
+<div class='row'><!-- 总row模块 -->
+<div class='col-sm-9' id='main_video'><!-- 视频模块 -->
 <video width="100%"  controls="controls">
   <source src={{ obj.url_address|safe  }} >
 </video>
 
 
-<div class='col-sm-12 video-intro'>
+<div class='col-sm-12 video-intro'><!-- 视频介绍模块 -->
 <h3>{{ obj.title }}</h3>
 
 <a class='video_image' href='{{ obj.category.get_absolute_url }}'><img src='{{ obj.category.get_image_url }}'  high="80" width="150" class="img-rounded" /></a> <br/>
 <!-- <a href='{{ obj.category.get_absolute_url }}'>{{ obj.category.description }}</a> <br/> -->
-
-
-
 <hr>
-<!-- JiaThis Button BEGIN -->
-<div class="col-sm-6 jiathis_style_24x24">
+
+<div class="col-sm-6 jiathis_style_24x24"><!-- 视频分享-->
 <!-- 	<span class="jiathis_txt"><h5>分享到：</h5></span> -->
 	<a class="jiathis_button_qzone"></a>
 	<a class="jiathis_button_tsina"></a>
@@ -103,11 +123,10 @@
 	<a class="jiathis_button_weixin"></a>
 	<a class="jiathis_button_renren"></a>
 	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank">&nbsp;</a>
-</div>
+</div><!-- 视频分享-->
 <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
-<!-- JiaThis Button END -->
-<div class='col-sm-6' style='text-align:right;'>
 
+<div class='col-sm-6' style='text-align:right;'><!-- 视频前进后退 -->
 {% if obj.get_previous_url %}
 <!-- <a href='{{ obj.get_previous_url }}'><i class="fa fa-step-backward fa-5"></i></a> -->
 <a href='{{ obj.get_previous_url }}'><span   data-toggle="tooltip" data-placement="left" title="转到上一课"><i class="fa fa-step-backward fa-5"></i></span></a>
@@ -118,61 +137,23 @@
 <a href='{{ obj.get_next_url }}'><span   data-toggle="tooltip" data-placement="right" title="转到下一课"><i class="fa fa-step-forward fa-5"></i></span></a>
 {% endif %}
 
-</div>
-</div>
-</div>
-
-<div class='col-sm-3 video-browser'>
-	<h3>{{ obj.title }}</h3>
-	<h3>{{ obj.title }}</h3>
-	<h3>{{ obj.title }}</h3>
-	<h3>{{ obj.title }}</h3>
-	<h3>{{ obj.title }}</h3>
-	<h3>{{ obj.title }}</h3>
-	<h3>{{ obj.title }}</h3>
-	<h3>{{ obj.title }}</h3>
-	<h3>{{ obj.title }}</h3>
-	<h3>{{ obj.title }}</h3>
-	<h3>{{ obj.title }}</h3>
-	<h3>{{ obj.title }}</h3>
-	<h3>{{ obj.title }}</h3>
-	<h3>{{ obj.title }}</h3>
-	<h3>{{ obj.title }}</h3>
-	<h3>{{ obj.title }}</h3>
-</div>
-</div>
+</div><!-- 视频前进后退 -->
+</div><!-- 视频介绍模块 -->
 
 
-<!-- {% if obj.tags.all %}
-<div class='col-sm-8'>
-<ul>
-{% for tag in obj.tags.all %}
-<li>{{ tag }}</li>
-{% endfor %}
-<ul>
-</div>
-{% endif %} -->
-
-
-
-
-<!-- 视频下方的Add Comment表格 -->
-<div class='row'>
-<div class='col-sm-9'>
-<h3>评论/提问</h3>
+<div class='col-sm-12 comment-module' ><!-- 评论模块 -->
+<h5>评论/提问</h5>
 <form method="POST" action='{{ obj.get_absolute_url }}'>{% csrf_token %}
 <input type='hidden' name='video_id' value='{{ obj.id }}'/>
 <input type='hidden' name='origin_path' value='{{ request.get_full_path }}'/>
-
 {% crispy comment_form comment_form.helper %}
 </form>
 
 
 <br/>
-<br/>
 <!-- 显示当前评论 -->
 <table class='table'>
-
+<h5>同学们都在说:</h5>
 {% for comment in comments %}
 <!-- 显示当前父评论的评论内容 -->
 
@@ -232,18 +213,40 @@
 </td></tr>
 {% endfor %}
 </table>
+</div><!-- 评论模块 -->
+</div><!-- 视频模块 -->
+
+
+<!-- 播放列表 -->
+<div class='col-sm-3 video-browser'>
+{% if queryset %}
+<table class='table'>
+<thead>
+<th>播放列表</th>
+</thead>
+{% for item in queryset %}
+<tr><td>{% if request.user.is_authenticated or item.has_preview %}<a href='{{ item.get_absolute_url }}'>[第{{ forloop.counter }}课] {{ item }}</a> {% else %} {{ item }} {% endif %}</td></tr>
+{% endfor %}
+</table>
+{% if not user.is_authenticated %}
+<h3 style='text-align:center;'><!-- 注册即可浏览所有视频 --></h3>
+{% endif %}
+{% else %}
+<h3 style='text-align:center;'>Project is coming soon.</h3>
+{% endif %}
+</div><!-- 播放列表 -->
+</div><!-- 总row模块 -->
+
+
+<!-- {% if obj.tags.all %}
+<div class='col-sm-8'>
+<ul>
+{% for tag in obj.tags.all %}
+<li>{{ tag }}</li>
+{% endfor %}
+<ul>
 </div>
-</div>
+{% endif %} -->
+
 {% endblock %}
 
-<script>
-{% block jquery %}
-/*    $(".fa-step-backward").mouseenter(function(){
-        $(this).css("background-color", "yellow");
-        console.log(count)
-    });
-    $("p").mouseleave(function(){
-        $("p").css("background-color", "lightgray");
-    });*/
-{% endblock %}
-</script>
