@@ -7,26 +7,28 @@ from django.shortcuts import render, Http404, HttpResponseRedirect,redirect, get
 from django.http import HttpResponse
 from .models import Notification
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 @login_required
 def all(request):
+	#返回所有与已回复相关的消息
 	notifications = Notification.objects.all_for_user(request.user).\
-	filter(verb=u"回复了")#.order_by = ('-timestamp')
-	# print "notifications"
-	# print notifications
-	# notifications.objects.order_by = ('timestamp')
-	# #reverse()
-	# print "------------------------------------"
-	# print "------------------------------------"
-	# print notifications
-	# print "------------------------------------"
-	# x = [1,2,3]
-	# print x
-	# x.reverse()
-	# print x
+	filter(verb=u"回复了")
+	paginator = Paginator(notifications, 10)
+	page = request.GET.get('page')
+	try:
+		contacts = paginator.page(page)
+	except PageNotAnInteger:
+		contacts = paginator.page(1)
+        # If page is not an integer, deliver first page.
+	except EmptyPage:
+		contacts = paginator.page(paginator.num_pages)
+		   # If page is out of range (e.g. 9999), deliver last page of results.
 
+	count = notifications.count()
 	context = {
-		"notifications":notifications,
+		"notifications":contacts,
+		"count":count,
 	}
 	return render(request, "notifications/all.html", context)
 
@@ -48,20 +50,22 @@ def read(request, id):
 	except:
 		raise redirect("notifications_all")
 
+
+
+
+
 @login_required
-def get_notifications_ajax(request):
-	if request.is_ajax() and request.method == "POST":
-		notifications = Notification.objects.all_for_user(request.user).recent()
+def hello(request):
+	#返回所有已回复并且未读的消息
+	if request.is_ajax():
+		notifications = Notification.objects.all_unread(request.user).\
+		filter(verb=u"回复了")
 		count = notifications.count()
-		notes = []
-		for note in notifications:
-			notes.append(str(note.get_link))
 		data = {
-			"notifications": notes,
 			"count": count,
 		}
-		print data
 		json_data = json.dumps(data)
+		print 'json_data'
 		print json_data
 		return HttpResponse(json_data, content_type='application/json')
 	else:

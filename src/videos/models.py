@@ -62,6 +62,7 @@ class Video(models.Model):
 	slug = models.SlugField(null=True, blank=True)
 	#视频标签
 	tags = GenericRelation("TaggedItem", null=True, blank=True)
+	url_address = models.CharField(max_length=500, null=True, blank=True)
 	#自定义查询语句
 	objects = VideoManager()
 	
@@ -160,8 +161,10 @@ class Category(models.Model):
 	title = models.CharField(max_length=120)
 	#类别描述
 	description = models.TextField(max_length=5000, null=True, blank=True)
+	introduction = models.TextField(max_length=5000, null=True, blank=True)
 	#类别图标
 	image = models.ImageField(upload_to='images/', null=True, blank=True)
+	image_detail = models.ImageField(upload_to='images/', null=True, blank=True)
 	#类别slug
 	slug = models.SlugField(default='abc', unique=True)
 	#类别是否被激活
@@ -191,6 +194,8 @@ class Category(models.Model):
 	def get_image_url(self):
 		return "%s%s" %(settings.MEDIA_URL, self.image)
 
+	def get_image_detail_url(self):
+		return "%s%s" %(settings.MEDIA_URL, self.image_detail)
 
 #标签数据库中tag的选项
 TAG_CHOICES = (

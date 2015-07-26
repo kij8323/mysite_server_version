@@ -15,7 +15,7 @@ class VideoAdmin(admin.ModelAdmin):
 	inlines = [TaggedItemInline]
 	list_display = ["__unicode__", 'slug']
 	fields = ['title', 'order','share_message', 'embed_code','active','slug',
-			'featured', 'free_preview',
+			'featured', 'free_preview', 'url_address',
 			 'category']
 	prepopulated_fields = {
 		'slug': ["title"], 

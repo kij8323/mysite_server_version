@@ -1,0 +1,206 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--<link rel="icon" href="../../favicon.ico">-->
+    <!--  icon 图片设置 -->
+    <link rel="icon" href="/media/images/1436862330_tree_1.ico">
+
+    <title>{% block title %}{% endblock %}梧桐教育</title>
+
+    <!-- Bootstrap core CSS -->
+    <!-- <link href="../../dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
+    <!-- Custom styles for this template -->
+    <style>
+    body {
+    /*min-height: 2000px;*/
+  }
+  .main-container {
+    min-height: 950px;
+  }
+.center{
+    text-align:center;
+}
+  .asteriskField {
+    display: none;
+}
+  .return {
+    color:  white;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  text-align:center;
+  background-color: #5cb85c;
+ 
+}
+
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    width: 1170px;
+    
+}
+
+.text-muted {
+margin: 20px 0;
+color: #FFF;
+}
+  .navbar-default {
+  margin-bottom: 0px;
+}
+.container-fluid {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.container-fluid .jumbotron {
+  border-radius: 0px;
+}
+/*
+  .navbar-static-top {
+    margin-bottom: 19px;
+  }*/
+  .navbar-default {
+    background-color: #fff;
+    border-color: #C5c5c5;
+    background-image:;
+  }
+  .navbar-default .navbar-nav>li>a {
+  color: #757575;
+  }
+
+  .navbar-default .navbar-nav>li>a:hover {
+  color: #757575;
+  }
+  .navbar-default .navbar-brand {
+  color: #757575;
+  }
+.center{
+    text-align:center;
+}
+
+  .navbar-brand-1 {
+  color: #757575;
+    padding-top: 3px;
+  padding-bottom: 2ex;
+  }
+
+  .navbar-default .navbar-brand:hover {
+  color: #757575;
+  }
+  .panel-jumbotron {
+    margin-top: 0px !important;
+  border-radius: 0px 4px 4px 4px;
+  min-height: 320px;
+  text-align: center;
+  }
+  .panel-jumbotron p {
+    font-size: 16px;
+  }
+  .nav-tabs-jumbotron {
+    border-bottom: 0px solid #ddd;
+  }
+  .nav-tabs-jumbotron>li>a {
+    color: #FFF;
+    background-color: #999;
+    border: 1px solid transparent;
+    border-bottom-width: 0;
+  }
+  .nav-tabs-jumbotron>li {
+  }
+  .nav-tab-item-jumbotron {
+    
+  }
+
+
+
+  {% block style %}
+  {% endblock %}
+  </style>
+  {% include 'extra_head_info.html' %}
+
+  </head>
+
+  <body style="background:transparent">
+
+  {% include 'navbar.html' %}
+  
+  {% block jumbotron %}
+  {% endblock %}
+
+    <div class="container">
+    
+
+    <div id='notificationsLoader'>
+
+    </div>
+      {% if messages %}
+        {% for message in messages %}
+        <div class="alert {% if 'error' in message.tags %}alert-warning{%else %}alert-success{% endif %}" role="alert">{% if 'safe' in message.tags %}{{ message|safe }}{% else %} {{ message }}{% endif %}
+        </div>
+        
+        {% endfor %}
+      {% endif %}
+      {% block content %}
+      {% endblock %}
+
+      <!-- Main component for a primary marketing message or call to action 
+      <div class="jumbotron">
+        <h1>Navbar example</h1>
+        <p>This example is a quick exercise to illustrate how the default, static and fixed to top navbar work. It includes the responsive CSS and HTML, so it also adapts to your viewport and device.</p>
+        <p>To see the difference between static and fixed top navbars, just scroll.</p>
+        <p>
+          <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
+        </p>
+      </div> -->
+
+    </div> <!-- /container -->
+
+    {% include 'footer_1.html' %}
+
+    {% include 'javascript.html' %}
+    <script>
+      $(document).ready(function(){
+        // alert('jquery woking');
+        {% block jquery %}
+        {% endblock %}
+      });
+    </script>
+
+
+    <script type="text/javascript">
+        $(function() {
+             $("#inbox").mouseenter(function() {
+                $.ajax({
+                    url: "{% url 'hello' %}",
+                    type: "get",
+                    success: function(data) {
+                        $("#inbox").html("<span data-toggle='tooltip' data-placement='bottom' title='您有" + data.count+ "条未读信息'><span class='glyphicon glyphicon-inbox' aria-hidden='true'></span></span>");
+                         console.log(data)
+                    },
+                    error: function(data) { 
+                        alert("Got an error dude");
+                    }
+                });
+
+            })
+             $("#inbox").mouseleave(function(){
+                $("#inbox").html("<span class='glyphicon glyphicon-inbox' aria-hidden='true'></span>");
+                console.log("hahashen")
+        });
+        })
+    </script>
+
+  </body>
+</html>

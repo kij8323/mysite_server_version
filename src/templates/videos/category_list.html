@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_1.html" %}
 {% load future %}
 
 {% block title %}{% endblock %}
@@ -9,7 +9,12 @@
 
 <div class='row'>
 <div class='col-sm-12'>
-<h1>Categories</h1>
+<div class='center'>
+<h1>课程一览</h1>
+<div class='col-sm-12 '>
+<br/>
+</div>
+</div>
 </div>
 </div>
 
@@ -17,25 +22,28 @@
 
 
 <div class='row'>
+<div class='center'>
 
 {% for item in queryset %}
-<div class='col-sm-6'>
+<div class='col-sm-4'>
+<a href='{{ item.get_absolute_url }}'><img src='{{ item.get_image_url }}' height="175" width="300" class="img-rounded" /></a> <br/>
+<a href='{{ item.get_absolute_url }}'>{{ item.description }}</a> <br/>
 
-<a href='{{ item.get_absolute_url }}'>{{ item }}</a> <br/>
-<a href='{{ item.get_absolute_url }}'><img src='{{ item.get_image_url }}' class='img-responsive' /></a> <br/>
 </div>
 
-{% cycle '' '<div class=\'col-sm-12\'><hr/></div>' %}
+{% cycle '' '' '<div class=\'col-sm-12\'></div>' %}
 
-{% if forloop.counter|divisibleby:10 %}
+{% if forloop.counter|divisibleby:3 %}
 
-</div><div class="row">
+<div class='col-sm-12 '>
+<br/>
+</div>
 
 {% endif %}
 
 
 {% endfor %}
-
+</div>
 </div>
 
 {% endblock %}

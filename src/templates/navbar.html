@@ -10,7 +10,7 @@
             <span class="icon-bar"></span>
           </button>
 
-         <a class="navbar-brand" href="/">主页</a>
+         <a class="navbar-brand navbar-brand-1" href="/"><img src='/media/images/1436862330_tree_1.ico' height="170%"></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -19,11 +19,9 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
 
-
-
-
           {% if user.is_authenticated %}
-              <li><a class="navbar-brand" href="{% url 'notifications_all' %}">消息</a>
+
+              <li><a class="navbar-brand" href="{% url 'notifications_all' %}" id='inbox'><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span></a>
 <!--               <li><a class='notification-toggle' href="#">Notifications</a></li> -->
 <!--              <li class="dropdown">
               <a href="#" class="dropdown-toggle notification-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class='glyphicon glyphicon-inbox' aria-hidden="true"></span> <span class="caret"></span></a>
@@ -35,11 +33,10 @@
 
               <li><a class="navbar-brand" href="{% url 'logout' %}">退出</a></li>
           {% else %}
-                    {% if request.get_full_path == "/" %}
-                    {% else %}
+         
                     <li><a class="navbar-brand" href="{% url 'register' %}">注册</a></li>
                         <li><a class="navbar-brand" href="{% url 'login' %}">登录</a></li>
-                    {% endif %}
+
         {% endif %}
           </ul>
         </div><!--/.nav-collapse -->

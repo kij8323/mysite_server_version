@@ -68,11 +68,14 @@ def home(request):
 		#注册表
 		register_form = RegisterForm()
 		template = "accounts/home_visitor.html"
+		queryset = Category.objects.all()
+
 		context = {
 				"register_form": register_form, 
 				"login_form": login_form, 
 				"featured_videos": featured_videos,
-				"featured_categories": featured_categories,				
+				"featured_categories": featured_categories,	
+				"queryset": queryset,			
 				}
 	
 	return render(request,template,context)

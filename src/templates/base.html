@@ -9,9 +9,9 @@
     <meta name="author" content="">
     <!--<link rel="icon" href="../../favicon.ico">-->
     <!--  icon 图片设置 -->
-    <link rel="icon" href="https://cfe-static.s3.amazonaws.com/static/img/ico/favicon.png?Signature=nK8T8Cgz5vzWrVBWldB9O%2FcfDkk%3D&Expires=1435037821&AWSAccessKeyId=AKIAJWNLKJDOZP7JRPJA">
+    <link rel="icon" href="/media/images/1436862330_tree_1.ico">
 
-    <title>{% block title %}{% endblock %}srvup Project</title>
+    <title>{% block title %}{% endblock %}梧桐教育</title>
 
     <!-- Bootstrap core CSS -->
     <!-- <link href="../../dist/css/bootstrap.min.css" rel="stylesheet"> -->
@@ -21,12 +21,15 @@
     <!-- Custom styles for this template -->
     <style>
     body {
+      overflow-x: hidden; 
     /*min-height: 2000px;*/
   }
   .main-container {
     min-height: 950px;
   }
-
+.center{
+    text-align:center;
+}
   .asteriskField {
     display: none;
 }
@@ -35,14 +38,15 @@
 }
 
   .footer {
-     background-color:#C5c5c5;
-    min-height: 50px;
-    padding: 20px 0px;
-    text-align: center;
-    margin-top: 50px;
-    bottom:0px;
-    
-  }
+    background-image:url("/media/images/soild.png");
+    background-color:#341E12;
+    background-position: top right;
+    background-repeat: repeat-x;
+    overflow: hidden;
+}
+
+
+
   .navbar-default {
   margin-bottom: 0px;
 }
@@ -58,22 +62,33 @@
     margin-bottom: 19px;
   }*/
   .navbar-default {
-    background-color: #005880;
-    border-color: #256582;
-    background-image: url("http://www.transparenttextures.com/patterns/batthern.png");
+    background-color: #fff;
+    border-color: #C5c5c5;
+    background-image:;
   }
   .navbar-default .navbar-nav>li>a {
-  color: #FFFFFF;
+  color: #757575;
   }
 
   .navbar-default .navbar-nav>li>a:hover {
-  color: #FFFFFF;
+  color: #757575;
   }
   .navbar-default .navbar-brand {
-  color: #FFFFFF;
+  color: #757575;
   }
+
+  .navbar-brand-1 {
+  color: #757575;
+    padding-top: 3px;
+  padding-bottom: 2ex;
+  }
+
+  .navbar-right{
+  margin-left: -100ex;
+  }
+
   .navbar-default .navbar-brand:hover {
-  color: #256582;
+  color: #757575;
   }
   .panel-jumbotron {
     margin-top: 0px !important;
@@ -106,14 +121,14 @@
 
   </head>
 
-  <body>
+  <body style="background:transparent">
 
   {% include 'navbar.html' %}
   
   {% block jumbotron %}
   {% endblock %}
 
-    <div class="container">
+    <div class="container" style="background-color: #FBFBFB;">
     
 
     <div id='notificationsLoader'>
@@ -141,6 +156,7 @@
 
     </div> <!-- /container -->
 
+
     {% include 'footer.html' %}
 
     {% include 'javascript.html' %}
@@ -151,40 +167,29 @@
         {% endblock %}
       });
     </script>
-    <script>
-    $(document).ready(function(){
-      $(".notification-toggle").click(function(e){
-        e.preventDefault();
-        $.ajax({
-          type: "POST",
-          url: "{% url 'get_notifications_ajax' %}",
-          data: {
-            csrfmiddlewaretoken: "{{ csrf_token }}",
-          },
-          success: function(data){
-            $("#notification_dropdown").html(' <li role="presentation" class="dropdown-header">Notifications</li>');
-            var count = data.count
-            console.log(count)
-            if (count == 0) {
-              var url = '{% url "notifications_all" %}'
-              $("#notification_dropdown").append("<li><a href='" + url+ "'>View All Notifications</a></li>")
-            } else {
-              $(data.notifications).each(function(){
-                var link = this;
-                $("#notification_dropdown").append("<li>" + link + "</li>")
-              })
-            }
-            console.log(data.notifications);
-          },
-          error: function(rs, e) {
-            console.log(rs);
-            console.log(e);
-          }
-        })
-      })
-    })
-    </script>
+    
+    <script type="text/javascript">
+        $(function() {
+             $("#inbox").mouseenter(function() {
+                $.ajax({
+                    url: "{% url 'hello' %}",
+                    type: "get",
+                    success: function(data) {
+                        $("#inbox").html("<span data-toggle='tooltip' data-placement='bottom' title='您有" + data.count+ "条未读信息'><span class='glyphicon glyphicon-inbox' aria-hidden='true'></span></span>");
+                         console.log(data)
+                    },
+                    error: function(data) { 
+                        alert("Got an error dude");
+                    }
+                });
 
+            })
+             $("#inbox").mouseleave(function(){
+                $("#inbox").html("<span class='glyphicon glyphicon-inbox' aria-hidden='true'></span>");
+                console.log("hahashen")
+        });
+        })
+    </script>
 
   </body>
 </html>

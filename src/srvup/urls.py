@@ -60,7 +60,7 @@ urlpatterns += patterns('comments.views',
 #通知页面（在主页暂时隐去）
 urlpatterns += patterns('notifications.views',
     url(r'^notifications/$', 'all', name='notifications_all'),
-    url(r'^notifications/ajax/$', 'get_notifications_ajax', name='get_notifications_ajax'),
     url(r'^notifications/(?P<id>\d+)/$', 'read', name='notifications_read'),
+    url(r'^hello/$', 'hello', name='hello'),
 )
 
