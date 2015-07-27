@@ -5,6 +5,9 @@
 
 <style>
 {% block style %}
+.recentcomment{
+	width: 90%;
+}
 {% endblock %}
 </style>
 
@@ -69,13 +72,17 @@
 			
 			<table class='table'>
 			{% for comment in recent_comments %}
-				<tr><td><font color="#337ab7"> {{ comment.user }}</font>: {{ comment.get_preview }}
-				<small> <font color="#337ab7"> 
-				{{ comment.timestamp|timesince|time_chinese_weeks|time_chinese_week|time_chinese_minus|time_chinese_minu|time_chinese_days|time_chinese_day|time_chinese_hours|time_chinese_hour }}前
-				</font></small> </td><td>
-				<a href='{{ comment.get_absolute_url }}'>浏览</a></td></tr>
+			<tr>
+			<td class='recentcomment'><strong>{{ comment.user }}&nbsp;</strong>
+			<small style='color: #757575;'> {{ comment.timestamp|timesince|time_chinese_weeks|time_chinese_week|time_chinese_minus|time_chinese_minu|time_chinese_days|time_chinese_day|time_chinese_hours|time_chinese_hour|timeblank }}前 :</small>
+			<br>
+			{{ comment.get_preview }}
+			</td>
+			<td>
+			<a href='{{ comment.get_absolute_url }}'>浏览</a>
+			</td>
+			</tr>
 			{% endfor %}
-
 			</table>
 	{% else %}
 

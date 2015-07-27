@@ -72,6 +72,13 @@ class Comment(models.Model):
 
 	def __unicode__(self):
 		return self.user.username
+
+	# @property 
+	# def get_time(self):
+	# 	time=str(self.timestamp)
+	# 	str(self.timestamp).replace(" ", "")
+	# 	return str(self.timestamp).replace(" ", "")
+
 	#该评论主页
 	def get_absolute_url(self):
 		return reverse('comment_thread', kwargs={"id": self.id})

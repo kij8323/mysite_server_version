@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_2.html" %}
 {% load time_chinese %}
 {% load crispy_forms_tags %}
 
@@ -7,6 +7,23 @@
 {% block style %}
 .reply_comment {
 	display: none;
+}
+
+.commentthread {
+	background-color: #fff;
+	margin-top: 10px;
+	margin-bottom: 100px;
+	padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    border-radius: 4px;
+}
+
+.btn-primary {
+	color: #fff;
+	background-color: #5cb85c;
+	border-color: #5cb85c;
 }
 {% endblock %}
 </style>
@@ -23,21 +40,28 @@ $('.reply_btn').click(function(e){
 </script>
 
 
+
 {% block content %}
-<a href="{{ comment.get_origin }}"><h4>返回视频</h4></a>
+<div class='commentthread'>
+<a href="{{ comment.get_origin }}"><h4 style="margin-left: 8px;">返回课程</h4></a>
 <table class='table'>
-<tr><td><small><font color="#337ab7">{{ comment.user }}</font>:</small>
+<tr><td><strong>{{ comment.user }}&nbsp;</strong>
+
+<small style='color: #757575;'> {{ comment.timestamp|timesince|time_chinese_weeks|time_chinese_week|time_chinese_minus|time_chinese_minu|time_chinese_days|time_chinese_day|time_chinese_hours|time_chinese_hour|timeblank }}前 :</small><br>
 {{ comment.get_comment }} 
-<font color="#337ab7"><small> {{ comment.timestamp|timesince|time_chinese_weeks|time_chinese_week|time_chinese_minus|time_chinese_minu|time_chinese_days|time_chinese_day|time_chinese_hours|time_chinese_hour }} 前 </small></font>
 				{% if not comment.is_child %}
 				<ul>
 				{% for child in comment.get_children %}
-				<!--如果评论是回应某个子评论的，那么显示被评论的子评论的用户名-->
+				<!--回复子评论-->
 				{% if  child.get_reponse  %}
-				<font color="#337ab7"><li><small> {{ child.user }} </font>回复  <font color="#337ab7">{{ child.get_reponse }}</font>: </small>
-				<!--反之直接显示子评论即可-->
+				<li><strong>{{ child.user }} </strong>
+				<small style='color: #757575;'>回复</small>
+				<strong>{{ child.get_reponse }}</strong>
+				<small style='color: #757575;'> {{ child.timestamp|timesince|time_chinese_weeks|time_chinese_week|time_chinese_minus|time_chinese_minu|time_chinese_days|time_chinese_day|time_chinese_hours|time_chinese_hour|timeblank }}前 :</small>
+				<!--回复楼主-->
 				{% else %}
-				<li><small> <font color="#337ab7">{{ child.user }}</font>: </small>
+				<li><strong>{{ child.user }}</strong>
+				<small style='color: #757575;'> {{ child.timestamp|timesince|time_chinese_weeks|time_chinese_week|time_chinese_minus|time_chinese_minu|time_chinese_days|time_chinese_day|time_chinese_hours|time_chinese_hour|timeblank }}前 :</small>
 				{% endif %}
 				{{ child.get_comment }} 
 
@@ -70,9 +94,5 @@ $('.reply_btn').click(function(e){
 
 </table>
 
-<div class='return'>
-<h1>回复</h1></br>
-<h1>回复</h1></br>
 </div>
-
 {% endblock %}

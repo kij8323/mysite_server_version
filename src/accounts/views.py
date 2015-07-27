@@ -79,5 +79,6 @@ def auth_register(request):
 		"title": title,
 		"submit_btn": submit_btn
 		}
+	#return HttpResponseRedirect("/")
 	return render(request, "accounts/account_login_register.html", context)
 

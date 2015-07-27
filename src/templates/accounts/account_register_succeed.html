@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_1.html" %}
 
 <style>
 {% block style %}
@@ -9,9 +9,10 @@
 </style>
 
 {% block content %}
+<div class='row' style='text-align:center;'>
 <h1>
 恭喜注册成功!请<a href='{% url "login" %}'>登录</a>
 </h1>
-
+</div>
 
 {% endblock %}

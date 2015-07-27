@@ -26,22 +26,6 @@ class RegisterForm(forms.Form):
         except:
             print "raise"
             raise 
-            #forms.ValidationError("There was an error, please try again or contact us111.")
-
-
-
-    #验证邮件有效性
-    # def clean_email(self):
-    #     email = self.cleaned_data.get("email")
-    #     try:
-    #         #验证邮件是否已经被注册过
-    #         exists = MyUser.objects.get(email=email)
-    #         raise forms.ValidationError("This username is taken")
-    #     except MyUser.DoesNotExist:
-    #         return email
-    #     except:
-    #         #验证邮件是否正常
-    #         raise forms.ValidationError("There was an error, please try again or contact us.")
 
     #验证密码有效性
     def clean_password2(self):
@@ -106,7 +90,7 @@ class UserChangeForm(forms.ModelForm):
 class LoginForm(forms.Form):
     username = forms.CharField(label='用户名')
     password = forms.CharField(label='密码', widget=forms.PasswordInput)
-
+    captcha = CaptchaField(label='请输入下方验证码',)
     # username = forms.CharField(label='',
     #     widget=forms.TextInput(attrs={"placeholder": "用户名"}))
     # password = forms.CharField(label='', 

@@ -35,3 +35,7 @@ def time_chinese_hour(value):
 @register.filter
 def time_chinese_hours(value): 
     return value.replace('hours', u'小时');
+
+@register.filter
+def timeblank(value): 
+    return value.replace(' ', '');
