@@ -181,7 +181,7 @@ $('.reply_btn').click(function(e){
 				<li><strong>{{ child.user }}</strong>
 				<small style='color: #757575;'> {{ child.timestamp|timesince|time_chinese_weeks|time_chinese_week|time_chinese_minus|time_chinese_minu|time_chinese_days|time_chinese_day|time_chinese_hours|time_chinese_hour|timeblank }}前 :</small>
 				{% endif %}
-				
+				<br>
 				<!-- 显示子评论内容 -->
 				{{ child.get_comment }} 
 				<!--回复子评论的reply与表-->

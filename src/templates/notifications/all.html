@@ -1,17 +1,23 @@
-{% extends "base.html" %}
-
+{% extends "base_1.html" %}
+{% load time_chinese %}
 <style>
 {% block style %}
 
 .pagination{
+  position: absolute;
+    bottom: 1%;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-        text-align:center;
+    left: 46%;
+
+   /* margin-top: 400px;*/
 }
- 
 
-
+.table {
+    margin-top: 10px;
+    width: 70%;
+    max-width: 100%;
+    margin-bottom: 10px;
+}
 
 {% endblock %}
 </style>
@@ -19,26 +25,16 @@
 
 {% block content %}
 
-<div class='row'>
-
-<div class='col-sm-10 col-sm-offset-1'>
-<h1>Notifications</h1>
-
-
-</div>
-
-
-</div>
-
 {% if notifications %}
-
-
-<div class='row'>
-<div class="col-sm-10 col-sm-offset-1">
-<table class='table'>
-
+<div class='row' style='align:center;'>
+<div class="col-sm-10 col-sm-offset-1 ">
+<table class='table table-striped' align="center">
+<thead>
+<th>消息</th>
+<th>状态</th>
+</thead>
 {% for note in notifications %}
-<tr><td><font color="#337ab7">{{note.sender_object}}</font> {{ note|safe }}<font color="#337ab7"><small> {{ note.timestamp|timesince }} ago </small></font></td><td>
+<tr><td><strong>{{note.sender_object}}</strong> {{ note|safe }}<small style='color: #757575;'> {{  note.timestamp|timesince|time_chinese_weeks|time_chinese_week|time_chinese_minus|time_chinese_minu|time_chinese_days|time_chinese_day|time_chinese_hours|time_chinese_hour|timeblank }}前</small></td><td>
 {% if note.read %} 
 已读
 {% else %} 
@@ -53,15 +49,15 @@
 <div class="pagination">
     <span class="step-links">
         {% if notifications.has_previous %}
-            <a href="?page={{ notifications.previous_page_number }}">previous</a>
+            <a href="?page={{ notifications.previous_page_number }}">前一页</a>
         {% endif %}
 
         <span class="current">
-            Page {{ notifications.number }} of {{ notifications.paginator.num_pages }}.
+            第 {{ notifications.number }}页,共{{ notifications.paginator.num_pages }}页.
         </span>
 
         {% if notifications.has_next %}
-            <a href="?page={{ notifications.next_page_number }}">next</a>
+            <a href="?page={{ notifications.next_page_number }}">后一页</a>
         {% endif %}
     </span>
 </div>
