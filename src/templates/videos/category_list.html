@@ -1,13 +1,22 @@
-{% extends "base_1.html" %}
+{% extends "base_3.html" %}
 {% load future %}
 
 {% block title %}{% endblock %}
 
 
+<style>
+{% block style %}
+
+
+
+
+{% endblock %}
+</style>
+
 
 {% block content %}
 
-<div class='row'>
+<div class='row' style='margin-top:2%;'>
 <div class='col-sm-12'>
 <div class='center'>
 <h1>课程一览</h1>
@@ -19,9 +28,7 @@
 </div>
 
 
-
-
-<div class='row'>
+<div class='row class-informantion'>
 <div class='center'>
 
 {% for item in queryset %}
@@ -40,8 +47,6 @@
 </div>
 
 {% endif %}
-
-
 {% endfor %}
 </div>
 </div>

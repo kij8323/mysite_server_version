@@ -32,6 +32,30 @@ def all(request):
 	}
 	return render(request, "notifications/all.html", context)
 
+@login_required
+def unreadmessage(request):
+	#返回所有与已回复相关的消息
+	notifications = Notification.objects.all_unread(request.user).\
+	filter(verb=u"回复了")
+	paginator = Paginator(notifications, 10)
+	page = request.GET.get('page')
+	try:
+		contacts = paginator.page(page)
+	except PageNotAnInteger:
+		contacts = paginator.page(1)
+        # If page is not an integer, deliver first page.
+	except EmptyPage:
+		contacts = paginator.page(paginator.num_pages)
+		   # If page is out of range (e.g. 9999), deliver last page of results.
+
+	count = notifications.count()
+	context = {
+		"notifications":contacts,
+		"count":count,
+	}
+	return render(request, "notifications/unread.html", context)
+
+
 
 @login_required
 def read(request, id):

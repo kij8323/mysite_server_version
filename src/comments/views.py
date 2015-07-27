@@ -91,7 +91,7 @@ def comment_create_view(request):
 						recipient=parent_comment.user, 
 						affected_users = affected_users,
 						verb=u'回复了')
-				messages.success(request, "Thank you for your response.", extra_tags='safe')
+				messages.success(request, "感谢您的回复.", extra_tags='safe')
 				#返回父评论的主页
 				return HttpResponseRedirect(parent_comment.get_absolute_url())
 			#如果该评论是父评论
@@ -108,8 +108,9 @@ def comment_create_view(request):
 				return HttpResponseRedirect(new_comment.get_absolute_url())
 		#如果表格填写错误，则停留在本页
 		else:
-			messages.error(request, "There was an error with your comment.")
-			return HttpResponseRedirect(origin_path)
+			messages.error(request, "您填写的内容有问题.")
+			return HttpResponseRedirect(parent_comment.get_absolute_url())
+			
 
 	else:
 		raise Http404

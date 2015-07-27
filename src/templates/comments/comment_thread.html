@@ -11,8 +11,7 @@
 
 .commentthread {
 	background-color: #fff;
-	margin-top: 10px;
-	margin-bottom: 100px;
+	margin-top: 20px;
 	padding-top: 10px;
     padding-right: 10px;
     padding-bottom: 10px;
@@ -63,6 +62,7 @@ $('.reply_btn').click(function(e){
 				<li><strong>{{ child.user }}</strong>
 				<small style='color: #757575;'> {{ child.timestamp|timesince|time_chinese_weeks|time_chinese_week|time_chinese_minus|time_chinese_minu|time_chinese_days|time_chinese_day|time_chinese_hours|time_chinese_hour|timeblank }}前 :</small>
 				{% endif %}
+				<br>
 				{{ child.get_comment }} 
 
 				<a href='#' class='reply_btn'>回复</a>
