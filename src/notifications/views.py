@@ -14,7 +14,7 @@ def all(request):
 	#返回所有与已回复相关的消息
 	notifications = Notification.objects.all_for_user(request.user).\
 	filter(verb=u"回复了")
-	paginator = Paginator(notifications, 10)
+	paginator = Paginator(notifications, 9)
 	page = request.GET.get('page')
 	try:
 		contacts = paginator.page(page)
@@ -37,7 +37,7 @@ def unreadmessage(request):
 	#返回所有与已回复相关的消息
 	notifications = Notification.objects.all_unread(request.user).\
 	filter(verb=u"回复了")
-	paginator = Paginator(notifications, 10)
+	paginator = Paginator(notifications, 9)
 	page = request.GET.get('page')
 	try:
 		contacts = paginator.page(page)

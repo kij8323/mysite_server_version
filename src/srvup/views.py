@@ -41,7 +41,7 @@ def home(request):
 		popular_videos_list = PageView.objects.filter(primary_content_type=video_type)\
 		 .values("primary_object_id")\
 		 .annotate(the_count=Count("primary_object_id"))\
-		 .order_by("-the_count")[:5]
+		 .order_by("-the_count")[:6]
 		popular_videos = []
 		for item in popular_videos_list:
 			try:
