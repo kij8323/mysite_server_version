@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^contact/$', TemplateView.as_view(template_name='company/contact_us.html'), name='contact_us'),
     #主页
     url(r'^$', 'srvup.views.home', name='home'),
+    url(r'^dashboardcomment/$', 'srvup.views.dashboardcomment', name='dashboardcomment'),
     #url(r'^staff/$', 'srvup.views.staff_home', name='staff'),
     #管理员页面
     url(r'^admin/', include(admin.site.urls)),

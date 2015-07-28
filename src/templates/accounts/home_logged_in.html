@@ -8,6 +8,39 @@
 .recentcomment{
 	width: 90%;
 }
+
+.nav-pills{
+	margin-top: 2%;
+}
+
+.dashboard{
+    color: #fff;
+    background-color: #5cb85c;
+}
+
+.recentvisit{
+	text-align:center;
+	background-color: #f1f1f1;
+/*	padding-top: 5%;*/
+/*	padding-bottom: 5%;*/
+	border-radius: 4px;
+	height: 265px;
+
+}
+
+.bestcourse{
+	text-align:center;
+	background-color: #f1f1f1;
+/*	padding-top: 5%;*/
+/*	padding-bottom: 5%;*/
+	border-radius: 4px;
+	height: 265px;
+}
+
+.table{
+	width: 80%;
+	margin-left: 10%;
+}
 {% endblock %}
 </style>
 
@@ -15,83 +48,64 @@
 
 
 {% block content %}
-<div class='row'>
-<div class='col-sm-4'>
-	<div class='row'>
 
+<ul class="nav nav-pills">
+  <li role="presentation"><a href="{% url 'home' %}" class="dashboard">我的面板</a></li>
+  <li role="presentation"><a href="{% url 'dashboardcomment' %}" class="recentinformation">最近留言</a></li>
+</ul>
+<hr>
+
+	<div class='row' >
 	<!--显示用户最近浏览过的6个视频 -->
-	<div class='col-sm-12'>
-		<h2>最近浏览</h2>
-
+	<div class='col-sm-6'>
+	<div class='recentvisit' >
 	{% if recent_videos %}
-		
+			<table class='table'>
+			<thead>
+			<th><h4 style="text-align:center;">最近浏览</h4></th>
+			</thead>
 			{% for vid in recent_videos %}
-			<a href="{{ vid.get_absolute_url }}">{{ vid.share_message }}</a><br/>
+			<tr><td><a href="{{ vid.get_absolute_url }}">{{ vid.share_message }}</a><br/>
 				{% if forloop.counter == 1 %}
 				<!--<a href="{{ vid.get_absolute_url }}"><img src="{{ vid.category.get_image_url }}" class='img-responsive'/></a><br/>-->
-				{% endif %}
-			{% endfor %}
-			
-
-
-	{% else %}
-	<p class='lead'>
-	您最近浏览的视频将会显示在这里.
-	</p>
-
-
-	{% endif %}
-<hr/>
-</div>
-
-	<!--点击次数最多的4个视频-->
-	{% if popular_videos %}
-		<div class='col-sm-12'>
-			<h2>最火教程</h2>
-			{% for vid in popular_videos %}
-			<a href="{{ vid.get_absolute_url }}">{{ vid.share_message }}</a><br/>
-			{% if forloop.counter == 1 %}
-			<!--<a href="{{ vid.get_absolute_url }}"><img src="{{ vid.category.get_image_url }}" class='img-responsive'/></a><br/>-->
-			{% endif %}
-			{% endfor %}
-			<hr/>
-		</div>
-	
-	{% endif %}
-	
-
-	</div>
-</div>
-
-<!--最近的6个评论-->
-<div class='col-sm-8'>
-	<h2>最新评论</h2>
-	
-	{% if recent_comments %}
-		
-			
-			<table class='table'>
-			{% for comment in recent_comments %}
-			<tr>
-			<td class='recentcomment'><strong>{{ comment.user }}&nbsp;</strong>
-			<small style='color: #757575;'> {{ comment.timestamp|timesince|time_chinese_weeks|time_chinese_week|time_chinese_minus|time_chinese_minu|time_chinese_days|time_chinese_day|time_chinese_hours|time_chinese_hour|timeblank }}前 :</small>
-			<br>
-			{{ comment.get_preview }}
-			</td>
-			<td>
-			<a href='{{ comment.get_absolute_url }}'>浏览</a>
-			</td>
-			</tr>
+				{% endif %}</td></tr>
 			{% endfor %}
 			</table>
 	{% else %}
-
-	<p class='lead'>
-	All comments will be here.
-	</p>
+			<table class='table'>
+			<thead>
+			<th><h4 style="text-align:center;">最近浏览的视频将显示在这里</h4></th>
+			</thead>
+			{% for vid in recent_videos %}
+			<tr><td><a href="{{ vid.get_absolute_url }}">{{ vid.share_message }}</a><br/>
+				{% if forloop.counter == 1 %}
+				<!--<a href="{{ vid.get_absolute_url }}"><img src="{{ vid.category.get_image_url }}" class='img-responsive'/></a><br/>-->
+				{% endif %}</td></tr>
+			{% endfor %}
+			</table>
 	{% endif %}
-
-		</div>
 </div>
+</div>
+
+	<!--点击次数最多的5个视频-->
+	
+		<div class='col-sm-6' >
+		<div class='bestcourse'>
+		{% if popular_videos %}
+			<table class='table'>
+			<thead>
+			<th><h4 style="text-align:center;">最火课程</h4></th>
+			</thead>
+			{% for vid in popular_videos %}
+			<tr><td><a href="{{ vid.get_absolute_url }}">{{ vid.share_message }}</a><br/>
+			{% if forloop.counter == 1 %}
+			<!--<a href="{{ vid.get_absolute_url }}"><img src="{{ vid.category.get_image_url }}" class='img-responsive'/></a><br/>-->
+			{% endif %}</td></tr>
+			{% endfor %}
+		</table>
+		</div>
+	{% endif %}
+	</div>
+	</div>
 
 {% endblock %}

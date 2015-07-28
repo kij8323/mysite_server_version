@@ -1,0 +1,82 @@
+{% extends "base_3.html" %}
+{% load time_chinese %}
+
+{% block title %}Welcome | {% endblock %}
+
+<style>
+{% block style %}
+.recentcomment{
+	width: 90%;
+}
+
+.nav-pills{
+	margin-top: 2%;
+}
+
+.recentinformation{
+    color: #fff;
+    background-color: #5cb85c;
+}
+
+.dashboardrecentcomment{
+	background-color: #f1f1f1;
+/*	padding-top: 5%;*/
+	border-radius: 4px;
+	margin-left: 16.5%;
+/*	height: 250px;*/
+}
+
+.table{
+	width: 80%;
+	margin-left: 10%;
+}
+{% endblock %}
+</style>
+
+
+
+
+{% block content %}
+
+<ul class="nav nav-pills">
+  <li role="presentation"><a href="{% url 'home' %}" class="dashboard">我的面板</a></li>
+  <li role="presentation"><a href="#" class="recentinformation">最近留言</a></li>
+</ul>
+<hr>
+
+	<div class='row' >
+	<!--显示用户最近浏览过的6个视频 -->
+<!--最近的6个评论-->
+<div class='col-sm-8 dashboardrecentcomment'>	
+	{% if recent_comments %}
+		
+			
+			<table class='table'>
+			<thead>
+			<th><h4 style="text-align:center;">最近评论</h4></th>
+			</thead>
+			{% for comment in recent_comments %}
+			<tr>
+			<td class='recentcomment'><strong>{{ comment.user }}&nbsp;</strong>
+			<small style='color: #757575;'> {{ comment.timestamp|timesince|time_chinese_weeks|time_chinese_week|time_chinese_minus|time_chinese_minu|time_chinese_days|time_chinese_day|time_chinese_hours|time_chinese_hour|timeblank }}前 :</small>
+			<br>
+			{{ comment.get_preview }}
+			</td>
+			<td>
+			<a href='{{ comment.get_absolute_url }}'>浏览</a>
+			</td>
+			</tr>
+			{% endfor %}
+			</table>
+	{% else %}
+
+	<p class='lead'>
+	All comments will be here.
+	</p>
+	{% endif %}
+
+</div>
+</div>
+
+
+{% endblock %}

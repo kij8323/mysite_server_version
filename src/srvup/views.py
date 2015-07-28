@@ -41,7 +41,7 @@ def home(request):
 		popular_videos_list = PageView.objects.filter(primary_content_type=video_type)\
 		 .values("primary_object_id")\
 		 .annotate(the_count=Count("primary_object_id"))\
-		 .order_by("-the_count")[:4]
+		 .order_by("-the_count")[:5]
 		popular_videos = []
 		for item in popular_videos_list:
 			try:
@@ -81,8 +81,15 @@ def home(request):
 	return render(request,template,context)
 
 
-
-
+@login_required
+def dashboardcomment(request):
+	#最近的6个评论
+	recent_comments = Comment.objects.recent()
+	context = {
+		"recent_comments": recent_comments,
+	}
+	template = "accounts/home_dashboard.html"
+	return render(request,template,context)
 
 
 
