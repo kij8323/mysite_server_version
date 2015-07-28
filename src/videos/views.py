@@ -77,8 +77,7 @@ def video_detail(request, cat_slug, vid_slug):
 							affected_users = affected_users,
 							verb=u'回复了')
 					messages.success(request, "感谢您的评论!")
-					if origin_path:
-						return HttpResponseRedirect(origin_path)
+					return HttpResponseRedirect(origin_path)
 
 				#如果该评论是父评论
 				else:
@@ -90,14 +89,17 @@ def video_detail(request, cat_slug, vid_slug):
 						video = video
 						)
 					messages.success(request, "感谢您的评论!")
-					if origin_path:
-						return HttpResponseRedirect(origin_path)
+					return HttpResponseRedirect(origin_path)
+
+			else:
+				messages.error(request, "您填写的内容有问题！")
+				return HttpResponseRedirect(origin_path)
+
 		#如果不是注册用户则提议登录
 		else:
-			messages.success(request, "登录就能与同学们一起讨论课程了！")
+			messages.error(request, "登录就能与同学们一起讨论课程了！")
 			origin_path = request.POST.get("origin_path")
-			if origin_path:
-				return HttpResponseRedirect(origin_path)
+			return HttpResponseRedirect(origin_path)
 
 
 
